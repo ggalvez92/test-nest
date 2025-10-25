@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 2,
   "framework": "nest",
   "buildCommand": "nest build",
   "installCommand": "pnpm install --frozen-lockfile",
