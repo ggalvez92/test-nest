@@ -1,6 +1,7 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
     "version": 2,
+    "framework": "nestjs",
     "buildCommand": "nest build",
     "installCommand": "pnpm install --frozen-lockfile",
     "outputDirectory": "dist",
