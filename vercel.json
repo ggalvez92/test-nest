@@ -1,22 +1,13 @@
 {
-  "version": 2,
-  "framework": "nest",
-  "buildCommand": "nest build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "dist",
-  "functions": {
-    "api/index.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 10
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "version": 2,
+    "buildCommand": "nest build",
+    "installCommand": "pnpm install --frozen-lockfile",
+    "outputDirectory": "dist",
+    "functions": {
+        "api/index.js": {
+        "runtime": "nodejs20.x",
+        "maxDuration": 10
+        }
     }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/index.js"
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
 }
