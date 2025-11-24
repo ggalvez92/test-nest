@@ -1,0 +1,54 @@
+// Prisma schema for NestJS auth system with refresh token sessions
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User model with global tokenVersion kill switch
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  password     String    // bcrypt hashed
+  tokenVersion Int       @default(0)  // Increment to invalidate all tokens
+  sessions     Session[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([email])
+}
+
+// Session model - stores hashed refresh tokens per device
+model Session {
+  id            String           @id @default(uuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  jti           String           @unique  // JWT ID embedded in refresh token
+  refreshHash   String                    // Hashed refresh token (bcrypt)
+
+  platform      SessionPlatform           // WEB | MOBILE
+  deviceLabel   String?                   // Optional device name/label
+  userAgent     String?                   // Browser/app user agent
+  ip            String?                   // IP address
+
+  expiresAt     DateTime                  // When this refresh token expires
+  revokedAt     DateTime?                 // When manually revoked
+  replacedByJti String?                   // For rotation chain tracking
+
+  createdAt     DateTime @default(now())
+  lastUsedAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([jti])
+  @@index([userId, revokedAt]) // For active session queries
+}
+
+enum SessionPlatform {
+  WEB
+  MOBILE
+}
