@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersService } from '../users/users.service';
+import { CategoriesService } from '../categories/categories.service';
 import * as bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 import { RegisterDto } from './dto/register.dto';
@@ -37,6 +38,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private usersService: UsersService,
+    private categoriesService: CategoriesService,
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
@@ -44,6 +46,7 @@ export class AuthService {
   /**
    * Register new user
    * Hashes password with bcrypt and creates user record
+   * Creates default categories for the new user
    */
   async register(dto: RegisterDto) {
     // Check if user already exists
@@ -60,6 +63,9 @@ export class AuthService {
       email: dto.email,
       password: hashedPassword,
     });
+
+    // Create default categories for the user
+    await this.categoriesService.createDefaultCategories(user.id);
 
     return {
       id: user.id,

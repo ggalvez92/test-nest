@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { UsersModule } from '../users/users.module';
+import { CategoriesModule } from '../categories/categories.module';
 
 /**
  * AuthModule - Configures authentication with JWT and Passport
@@ -13,6 +14,7 @@ import { UsersModule } from '../users/users.module';
 @Module({
   imports: [
     UsersModule, // Import to access UsersService
+    CategoriesModule, // Import to access CategoriesService
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

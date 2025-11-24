@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { TasksModule } from './tasks/tasks.module';
+import { CategoriesModule } from './categories/categories.module';
 
 /**
  * AppModule - Root application module
@@ -21,6 +23,8 @@ import { UsersModule } from './users/users.module';
     // Feature modules
     AuthModule,
     UsersModule,
+    TasksModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
